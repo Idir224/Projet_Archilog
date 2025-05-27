@@ -5,9 +5,9 @@ description = "A simple project for educational purpose."
 readme = "README.md"
 dependencies = [
     "click>=8.1.7",
-    "flask>=3.1.0",  # Ajouté pour le support de Flask
-    "sqlalchemy>=2.0.40",
-    "python-dotenv>=1.0.1"  # Optionnel, si tu veux charger .env automatiquement
+    "flask>=3.1.0", # Ajouté pour le support de Flask
+    "sqlalchemy>=2.0.40", # Optionnel, si tu veux charger .env automatiquement
+    "python-dotenv>=1.0.1",
 ]
 requires-python = ">=3.10"
 

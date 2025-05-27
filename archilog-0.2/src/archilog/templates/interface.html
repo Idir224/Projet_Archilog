@@ -22,14 +22,14 @@
             <td>{{ entry.category or "-" }}</td>
             <td>{{ entry.date }}</td>
             <td>
-                <a href="{{ url_for('delete_entry', id=entry.id) }}">Supprimer</a>
+                <a href="{{ url_for('web_ui.delete_entry', id=entry.id) }}">Supprimer</a>
             </td>
             <td> 
-                <a href="{{ url_for('update_entry', id=entry.id) }}">Modifier</a>
+                <a href="{{ url_for('web_ui.update_entry', id=entry.id) }}">Modifier</a>
             </td>
         </tr>
         {% endfor %}
     </table>
-    <p><a href="{{ url_for('create_entry') }}"> Ajouter une entrée</a></p>
+    <p><a href="{{ url_for('web_ui.create_entry') }}"> Ajouter une entrée</a></p>
 </body>
 </html>
