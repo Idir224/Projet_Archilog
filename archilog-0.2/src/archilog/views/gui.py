@@ -26,4 +26,11 @@ def delete_entry(id):
 
 @web_ui.route("/update/<uuid:id>", methods=["GET", "POST"])
 def update_entry(id):
-    entry = models.get_entry(id_
+    entry = models.get_entry(id)
+    if request.method == "POST":
+        name = request.form["name"]
+        amount = float(request.form["amount"])
+        category = request.form.get("category", None)
+        models.update_entry(id, name, amount, category)
+        return redirect(url_for("web_ui.index"))
+    return render_template("update.html", entry=entry)

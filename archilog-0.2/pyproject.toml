@@ -5,15 +5,18 @@ description = "A simple project for educational purpose."
 readme = "README.md"
 dependencies = [
     "click>=8.1.7",
+    "flask>=3.1.0",  # Ajouté pour le support de Flask
     "sqlalchemy>=2.0.40",
+    "python-dotenv>=1.0.1"  # Optionnel, si tu veux charger .env automatiquement
 ]
 requires-python = ">=3.10"
-
 
 [build-system]
 requires = ["flit_core<4"]
 build-backend = "flit_core.buildapi"
 
-
 [project.scripts]
-archilog = "archilog.views:cli"
+archilog = "archilog.views.cli:cli"  # Corrigé pour pointer vers le bon fichier
+
+[tool.pyproject-runner.tasks]
+start = {cmd = "flask --app archilog.views --debug run", env-file = "!/dev.env"}
