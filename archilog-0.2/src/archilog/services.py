@@ -1,29 +1,36 @@
 import csv
-import dataclasses
 import io
-
-from archilog.models import create_entry, get_all_entries, Entry
-
+import uuid
+from datetime import datetime
+import archilog.models as models
 
 def export_to_csv() -> io.StringIO:
+    entries = models.get_all_entries()
     output = io.StringIO()
-    csv_writer = csv.DictWriter(
-        output, fieldnames=[f.name for f in dataclasses.fields(Entry)]
-    )
-    csv_writer.writeheader()
-    for todo in get_all_entries():
-        csv_writer.writerow(dataclasses.asdict(todo))
+    writer = csv.writer(output)
+    
+    writer.writerow(["id", "name", "amount", "category", "date"])  # Header
+    
+    for entry in entries:
+        writer.writerow([
+            str(entry.id),  # UUID en string
+            entry.name,
+            entry.amount,
+            entry.category or "",
+            entry.date.isoformat()
+        ])
+    
+    output.seek(0)
     return output
 
-
-def import_from_csv(csv_file: io.StringIO) -> None:
-    csv_reader = csv.DictReader(
-        csv_file, fieldnames=[f.name for f in dataclasses.fields(Entry)]
-    )
-    next(csv_reader)
-    for row in csv_reader:
-        create_entry(
-            name=row["name"],
-            amount=float(row["amount"]),
-            category=row["category"],
-        )
+def import_from_csv(file) -> None:
+    reader = csv.DictReader(file)
+    for row in reader:
+        try:
+            id = uuid.UUID(row["id"])  # Ignoré car non utilisé dans la création
+            name = row["name"]
+            amount = float(row["amount"])
+            category = row.get("category") or None
+            models.create_entry(name, amount, category)
+        except Exception as e:
+            print(f"Erreur lors de l'import d'une ligne : {e}")

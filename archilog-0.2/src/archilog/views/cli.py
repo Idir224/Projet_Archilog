@@ -1,19 +1,15 @@
 import click
 import uuid
-
 import archilog.models as models
 import archilog.services as services
-
 
 @click.group()
 def cli():
     pass
 
-
 @cli.command()
 def init_db():
     models.init_db()
-
 
 @cli.command()
 @click.option("-n", "--name", prompt="Name")
@@ -22,27 +18,23 @@ def init_db():
 def create(name: str, amount: float, category: str | None):
     models.create_entry(name, amount, category)
 
-
 @cli.command()
 @click.option("--id", required=True, type=click.UUID)
 def get(id: uuid.UUID):
     click.echo(models.get_entry(id))
 
-
 @cli.command()
-@click.option("--as-csv", is_flag=True, help="Ouput a CSV string.")
+@click.option("--as-csv", is_flag=True)
 def get_all(as_csv: bool):
     if as_csv:
         click.echo(services.export_to_csv().getvalue())
     else:
         click.echo(models.get_all_entries())
 
-
 @cli.command()
 @click.argument("csv_file", type=click.File("r"))
 def import_csv(csv_file):
     services.import_from_csv(csv_file)
-
 
 @cli.command()
 @click.option("--id", type=click.UUID, required=True)
@@ -51,7 +43,6 @@ def import_csv(csv_file):
 @click.option("-c", "--category", default=None)
 def update(id: uuid.UUID, name: str, amount: float, category: str | None):
     models.update_entry(id, name, amount, category)
-
 
 @cli.command()
 @click.option("--id", required=True, type=click.UUID)

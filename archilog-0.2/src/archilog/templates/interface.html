@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Liste des entrées</title>
+</head>
+<body>
+    <h1>Entrées enregistrées</h1>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Nom</th>
+            <th>Montant</th>
+            <th>Catégorie</th>
+            <th>Date</th>
+            <th colspan="2">Actions</th>
+        </tr>
+        {% for entry in entries %}
+        <tr>
+            <td>{{ entry.name }}</td>
+            <td>{{ entry.amount }} €</td>
+            <td>{{ entry.category or "-" }}</td>
+            <td>{{ entry.date }}</td>
+            <td>
+                <a href="{{ url_for('delete_entry', id=entry.id) }}">Supprimer</a>
+            </td>
+            <td> 
+                <a href="{{ url_for('update_entry', id=entry.id) }}">Modifier</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p><a href="{{ url_for('create_entry') }}"> Ajouter une entrée</a></p>
+</body>
+</html>
